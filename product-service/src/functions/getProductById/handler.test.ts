@@ -1,5 +1,5 @@
 import { getProductById } from './handler';
-import { productList } from '../productList';
+import { products } from '../products';
 
 jest.mock('@libs/api-gateway', () => ({
     formatJSONResponse: (arg) => arg
@@ -14,7 +14,7 @@ describe('getProductById', () => {
         // Arrange
         const event = {
             pathParameters: {
-                productId: productList[0].id
+                productId: products[0].id
             }
         }
 
@@ -23,7 +23,7 @@ describe('getProductById', () => {
 
 
         // Assert
-        expect(product).toEqual(productList[0]);
+        expect(product).toEqual(products[0]);
     });
 
     it('should return error', async () => {

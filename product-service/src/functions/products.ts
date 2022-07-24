@@ -1,4 +1,4 @@
-export const productList = [
+export const products = [
     {
         "count": 4,
         "description": "Short Product Description1",

@@ -1,21 +1,22 @@
 import { formatJSONResponse } from '@libs/api-gateway';
 import { middyfy } from '@libs/lambda';
-import { productList } from '../productList';
+import * as pg from '@libs/pg';
 
 export const getProductById = async (event) => {
-  try {
-    const { productId } = event.pathParameters;
+  const { productId } = event.pathParameters;
 
-    const product = productList.find((item) => item.id === productId)
+  return pg.getProductById(productId)
+      .then((product) => {
 
-    if (!product) {
-      throw new Error('Product not found')
-    }
+        if (!product) {
+          throw new Error('Product not found')
+        }
 
-    return formatJSONResponse(product);
-  } catch (error) {
-    return formatJSONResponse({'error': error.message});
-  }
-};
+        // todo: define fix type of product
+        return formatJSONResponse(product as any);
+      })
+      .catch((error) => formatJSONResponse({'error': error.message}));
+}
+
 
 export const main = middyfy(getProductById);
